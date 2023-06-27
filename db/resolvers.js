@@ -23,7 +23,6 @@ const cursos = [
 const resolvers = {
     Query: {
         obtenerCursos: () => cursos,
-        obtenerTecnologia: () => cursos
     }
 }
 
