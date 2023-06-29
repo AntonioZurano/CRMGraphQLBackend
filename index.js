@@ -5,7 +5,7 @@ const resolvers = require('./db/resolvers');
 // Servidor
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers       
 });
 
 // Iniciar servidor
