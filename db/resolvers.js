@@ -38,6 +38,14 @@ const resolvers = {
       }
       return producto;
     },
+    obtenerClientes: async () => {
+      try {
+        const clientes = await Cliente.find({});
+        return clientes;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
     Mutation: {
       nuevoUsuario: async (_, { input }) => {
@@ -133,6 +141,7 @@ const resolvers = {
         console.log(error);
       } 
     },
+
   //  actualizarCliente: async (_, { id, input }, ctx) => {
 
   }
