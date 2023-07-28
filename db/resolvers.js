@@ -102,7 +102,31 @@ const resolvers = {
       obtenerPedidosEstado: async (_, { estado }, ctx) => {
         const pedidos = await Pedido.find({ vendedor: ctx.usuario.id, estado });
         return pedidos;
-      }
+      },
+      mejoresClientes: async () => {
+        const clientes = await Pedido.aggregate([
+          { $match: { estado: "COMPLETADO" } },// Filtrar
+          { $group: { // Agrupar
+            _id: "$cliente",
+            total: { $sum: '$total' }
+          }},
+          {
+            $lookup: { // Join
+              from: 'clientes',
+              localField: '_id',
+              foreignField: "_id",
+              as: "cliente"
+            }
+          },
+          {
+            $limit: 10   // Limitar
+          },
+          {
+            $sort: { total: -1 }  // 1 ascendente, -1 descendente
+          }
+        ]);
+        return clientes;
+      },
     },
   Mutation: {
     nuevoUsuario: async (_, { input }) => {
