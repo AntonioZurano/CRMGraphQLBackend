@@ -308,6 +308,21 @@ const resolvers = {
       const resultado = await Pedido.findOneAndUpdate({ _id: id }, input, { new: true });
       return resultado;
     },
+    eliminarPedido: async (_, { id }, ctx) => {
+      //verificar si el pedido existe o no
+      const pedido = await Pedido.findById(id);
+      if (!pedido) {
+        throw new Error('Pedido no encontrado');
+      }
+      //verificar si el vendedor es el que lo borra
+      if (pedido.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error('No tienes las credenciales');
+      }
+      
+      //eliminar de la base de datos
+      await Pedido.findOneAndDelete({_id: id});
+      return "Pedido Eliminado";
+    }
   }
 };
 
